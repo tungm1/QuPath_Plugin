@@ -16,7 +16,8 @@ ext.moduleName = 'io.github.qupath.extension.template'
 // TODO: Define the extension name & version, and provide a short description
 base {
     archivesName = rootProject.name
-    version = '0.0.1-SNAPSHOT'
+    //version = '0.0.1-SNAPSHOT'
+    version = '0.4.0'
     description = 'A simple QuPath extension template'
 }
 
@@ -52,6 +53,10 @@ dependencies {
 
     // For JavaFX
     shadow libs.qupath.fxtras
+    implementation 'org.controlsfx:controlsfx:11.1.1'
+
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-fxml:17'
 
     // If you aren't using Groovy, this can be removed
     shadow libs.bundles.groovy
