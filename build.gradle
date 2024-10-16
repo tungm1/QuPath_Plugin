@@ -7,7 +7,9 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     // Include this plugin to avoid downloading JavaCPP dependencies for all platforms
     id 'org.bytedeco.gradle-javacpp-platform'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
+    //id 'org.openjfx.javafxplugin' version '0.1.0'
+    //id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 // TODO: Change the module name
@@ -20,6 +22,12 @@ base {
     version = '0.4.0'
     description = 'A simple QuPath extension template'
 }
+
+javafx {
+    version = '17'  // Ensure this matches your desired JavaFX version
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
 
 // TODO: Specify the QuPath version, compatible with the extension.
 // The default 'gradle.ext.qupathVersion' reads this from settings.gradle.
