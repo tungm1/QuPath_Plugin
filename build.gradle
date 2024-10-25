@@ -7,9 +7,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     // Include this plugin to avoid downloading JavaCPP dependencies for all platforms
     id 'org.bytedeco.gradle-javacpp-platform'
-    //id 'org.openjfx.javafxplugin' version '0.1.0'
-    //id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.14'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 // TODO: Change the module name
@@ -23,19 +21,13 @@ base {
     description = 'A simple QuPath extension template'
 }
 
-javafx {
-    version = '17'  // Ensure this matches your desired JavaFX version
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
-}
-
-
 // TODO: Specify the QuPath version, compatible with the extension.
 // The default 'gradle.ext.qupathVersion' reads this from settings.gradle.
 ext.qupathVersion = gradle.ext.qupathVersion
 
 // TODO: Specify the Java version compatible with the extension
 // Should be Java 17 for QuPath v0.5.0
-ext.qupathJavaVersion = 17
+ext.qupathJavaVersion = 21
 
 /**
  * Define dependencies.
@@ -49,6 +41,12 @@ ext.qupathJavaVersion = 17
  *   but shouldn't be bundled up for use in the extension.
  */
 dependencies {
+
+	// QuPath user interface jar
+    shadow "io.github.qupath:qupath-gui-fx:${qupathVersion}" // 使用 QuPath 的 GUI 版本
+
+    // 如果只需要核心库，可以使用 core
+    shadow "io.github.qupath:qupath-core:${qupathVersion}"
 
     // Main QuPath user interface jar.
     // Automatically includes other QuPath jars as subdependencies.
@@ -180,4 +178,5 @@ repositories {
         url "https://maven.scijava.org/content/repositories/snapshots"
     }
 
+}
 }
