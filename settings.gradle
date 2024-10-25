@@ -8,6 +8,8 @@ pluginManagement {
     }
 }
 
+//enableFeaturePreview('VERSION_CATALOGS')
+
 // TODO: Name your QuPath extension here!
 rootProject.name = 'my-qupath-extension'
 
