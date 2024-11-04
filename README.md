@@ -20,7 +20,7 @@ chmod +x gradlew
 
 Open a command prompt, navigate to where the code lives, and use
 ```bash
-gradlew build
+./gradlew build
 ```
 
 The built extension should be found inside `build/libs`.
