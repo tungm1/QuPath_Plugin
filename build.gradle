@@ -17,7 +17,7 @@ ext.moduleName = 'io.github.qupath.extension.template'
 base {
     archivesName = rootProject.name
     //version = '0.0.1-SNAPSHOT'
-    version = '0.4.0'
+    version = '0.5.0'
     description = 'A simple QuPath extension template'
 }
 
@@ -27,7 +27,7 @@ ext.qupathVersion = gradle.ext.qupathVersion
 
 // TODO: Specify the Java version compatible with the extension
 // Should be Java 17 for QuPath v0.5.0
-ext.qupathJavaVersion = 21
+ext.qupathJavaVersion = 17
 
 /**
  * Define dependencies.
@@ -178,5 +178,5 @@ repositories {
         url "https://maven.scijava.org/content/repositories/snapshots"
     }
 
-}
+
 }
