@@ -12,9 +12,15 @@ Then, it's a matter of customizing the code to make it more useful.
 Building the extension with Gradle should be pretty easy - you don't even need to install Gradle separately, because the 
 [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) will take care of that.
 
+First, set the permissions for gradle
+
+```bash
+chmod +x gradlew
+```
+
 Open a command prompt, navigate to where the code lives, and use
 ```bash
-gradlew build
+./gradlew build
 ```
 
 The built extension should be found inside `build/libs`.
