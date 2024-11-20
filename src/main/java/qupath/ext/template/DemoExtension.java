@@ -45,7 +45,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 	 * Display name for your extension
 	 * TODO: define this
 	 */
-	private static final String EXTENSION_NAME = "My Java extension";
+	private static final String EXTENSION_NAME = "CircleNet Extension";
 
 	/**
 	 * Short description, used under 'Extensions > Installed extensions'
