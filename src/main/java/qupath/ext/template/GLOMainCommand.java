@@ -49,7 +49,6 @@ public class GLOMainCommand {
     private String targetDir; // 目标目录
 
 
-
     public GLOMainCommand(QuPathGUI qupath) {
         this.qupath = qupath;
     }
@@ -217,7 +216,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             desktopDir = System.getProperty("user.home") + "/Desktop";
         } else if (os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0) {
             // On Linux, the desktop is also in the user's home directory
-            desktopDir = "/home/yuej2"+ "/Desktop";
+            desktopDir = "/home/VANDERBILT/tungm1"+ "/Desktop";
         } else {
             throw new IOException("Unsupported operating system");
         }
@@ -235,29 +234,21 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             String qupathModelDir = desktopDir + "/models_and_pythonfiles";  // Create a models folder in the QuPath directory
             Files.createDirectories(Paths.get(qupathModelDir));
 
-                    // Set folder permissions after creating the directory
+            // Set folder permissions after creating the directory
             setFolderPermissions(qupathModelDir);
+    
 
-    // // Google Drive direct download links for the .pth files
-    // String[] pthLinks = {
-    //     "https://drive.google.com/uc?export=download&id=1o9QklDoV9_7BvJCJU_PaEBaTDB7rxFDG",  // model1_best.pth
-    //     "https://drive.google.com/uc?export=download&id=1PzMYMAv059pT_HifX3QbLZXWXBsbnBDN",  // model2_best.pth
-    //     "https://drive.google.com/uc?export=download&id=1-inIDGP4-zjwSzSpUplbPJEPgoPLFX-Y",  // model3_best.pth
-    //     "https://drive.google.com/uc?export=download&id=1L21zS550YAjFmmsBakHDGGMG6ys5ZxDQ",  // model4_best.pth
-    //     "https://drive.google.com/uc?export=download&id=1QiPg1XgxIyk0N5tLtANeG45qqqOqEYZG"   // model5_best.pth
-    // };
+            // Google Drive direct download links for the .pth files
+            String[] pthLinks = {
+                "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model1_best.pth",  // model1_best.pth
+                "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model2_best.pth",  // model2_best.pth
+                "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model3_best.pth",  // model3_best.pth
+                "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model4_best.pth",  // model4_best.pth
+                "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model5_best.pth"   // model5_best.pth
+            };
 
-        // Google Drive direct download links for the .pth files
-    String[] pthLinks = {
-        "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model1_best.pth",  // model1_best.pth
-        "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model2_best.pth",  // model2_best.pth
-        "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model3_best.pth",  // model3_best.pth
-        "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model4_best.pth",  // model4_best.pth
-        "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model5_best.pth"   // model5_best.pth
-    };
-
-    // URL for the Python scripts ZIP file
-    String zipFileUrl = "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/CircleNet_Zip.zip";
+            // URL for the Python scripts ZIP file 
+            String zipFileUrl = "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/CircleNet_Zip.zip";
 
             // Download resources (Python scripts and .pth files) to the QuPath models directory
             downloadResources(pthLinks, zipFileUrl, qupathModelDir);
@@ -269,6 +260,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             String rawPath = qupath.getViewer().getImageData().getServer().getPath();
             String wholeSlideImagePath = rawPath.contains("file:") ? rawPath.split("file:")[1].trim() : rawPath;
 
+            wholeSlideImagePath = wholeSlideImagePath.replaceAll("\\[--series, 0\\]$", ""); // FOR MICHAEL - THIS WAS DONE BY YOU
             System.out.println("Extracted Whole Slide Image Path: " + wholeSlideImagePath);
 
             // Generate GeoJSON file path based on WSI name
@@ -284,7 +276,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
 
             // Prepare Python command to run the downloaded script
             List<String> command = new ArrayList<>();
-            command.add("/home/yuej2/anaconda3/envs/CircleNet/bin/python3.7");  // Python interpreter
+            command.add("/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin/python3.7");  // Python interpreter
             command.add(qupathModelDir + "/python_scripts/CircleNet_Zip/src/run_detection_for_scn.py");  // Use the downloaded Python script
             command.add("circledet");
             command.add("--circle_fusion");
@@ -304,8 +296,8 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             // Run the process
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Map<String, String> env = processBuilder.environment();
-            env.put("PATH", "/home/yuej2/anaconda3/envs/CircleNet/bin:" + env.get("PATH"));
-            env.put("PYTHONPATH", "/home/yuej2/.local/lib/python3.7/site-packages");
+            env.put("PATH", "/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin:" + env.get("PATH"));
+            env.put("PYTHONPATH", "/home/VANDERBILT/tungm1/.local/lib/python3.7/site-packages");
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();

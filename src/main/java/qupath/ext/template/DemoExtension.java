@@ -43,22 +43,19 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 
 	/**
 	 * Display name for your extension
-	 * TODO: define this
 	 */
 	private static final String EXTENSION_NAME = "CircleNet Extension";
 
 	/**
 	 * Short description, used under 'Extensions > Installed extensions'
-	 * TODO: define this
 	 */
 	private static final String EXTENSION_DESCRIPTION = "This is just a demo to show how extensions work";
 
 	/**
 	 * QuPath version that the extension is designed to work with.
 	 * This allows QuPath to inform the user if it seems to be incompatible.
-	 * TODO: define this
 	 */
-	private static final Version EXTENSION_QUPATH_VERSION = Version.parse("v0.5.0");
+	private static final Version EXTENSION_QUPATH_VERSION = Version.parse("v0.5.1");
 
 	/**
 	 * GitHub repo that your extension can be found at.
