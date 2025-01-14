@@ -5,7 +5,7 @@ import javafx.concurrent.Task;
 import qupath.lib.io.PathIO;
 import java.io.InputStream;
 import java.io.FileInputStream; 
-import java.io.FileOutputStream;  // <-- Add this line
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,6 @@ import java.util.Map;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 import java.io.*;
 import java.net.*;
 import java.nio.file.*;
@@ -44,9 +43,9 @@ import java.util.HashSet;
 public class GLOMainCommand {
 
     private static final Logger logger = LoggerFactory.getLogger(GLOMainCommand.class);
-    private final QuPathGUI qupath; // QuPath GUI 实例
-    private String serverURL; // 服务器URL
-    private String targetDir; // 目标目录
+    private final QuPathGUI qupath; // Qupath GUI instance
+    private String serverURL;
+    private String targetDir;
 
 
     public GLOMainCommand(QuPathGUI qupath) {
@@ -238,7 +237,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             setFolderPermissions(qupathModelDir);
     
 
-            // Google Drive direct download links for the .pth files
+            // Direct download links for the .pth files
             String[] pthLinks = {
                 "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model1_best.pth",  // model1_best.pth
                 "https://raw.githubusercontent.com/JLY0814/qupath_wcf_extension/refs/heads/main/WCF/model/model2_best.pth",  // model2_best.pth
@@ -260,7 +259,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
             String rawPath = qupath.getViewer().getImageData().getServer().getPath();
             String wholeSlideImagePath = rawPath.contains("file:") ? rawPath.split("file:")[1].trim() : rawPath;
 
-            wholeSlideImagePath = wholeSlideImagePath.replaceAll("\\[--series, 0\\]$", ""); // FOR MICHAEL - THIS WAS DONE BY YOU
+            wholeSlideImagePath = wholeSlideImagePath.replaceAll("\\[--series, 0\\]$", ""); // removes series thing
             System.out.println("Extracted Whole Slide Image Path: " + wholeSlideImagePath);
 
             // Generate GeoJSON file path based on WSI name
@@ -321,11 +320,11 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
                 logger.info("Python script output: " + output.toString());
             }
 
-                // 调用生成 GeoJSON 路径的方法
-        String targetDir= qupathModelDir + "/test_only_result";
-        String geojsonDir = generateGeoJsonPath(targetDir);  // targetDir 替换 xml_dir
-        // 解析输出结果
-        parsePythonOutput(output.toString(), geojsonDir, wsiName);
+            // Call the method generating Geojson path
+            String targetDir= qupathModelDir + "/test_only_result";
+            String geojsonDir = generateGeoJsonPath(targetDir);  // targetDir replace xml_dir
+            // Analysis output results
+            parsePythonOutput(output.toString(), geojsonDir, wsiName);
 
         } catch (IOException | InterruptedException e) {
             logger.error("Error during process execution", e);
@@ -338,7 +337,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
 
 
 
-    // 方法用于生成 GeoJSON 保存目录路径
+    // Methods to generate Geojson to save directory paths
     private String generateGeoJsonPath(String targetDir) {
         Path targetDirPath = Paths.get(targetDir);
         String baseName = targetDirPath.getFileName().toString();
@@ -346,23 +345,23 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
         return geoJsonDir;
     }
 
-    // 方法用于解析 Python 输出并加载 GeoJSON 文件到 QuPath
+    // Analyze Python output and load the Geojson file to Qupath
     private void parsePythonOutput(String output, String geojsonDir, String wsiName) {
-        // 此处可以添加对 Python 输出的解析逻辑
+        // You can add analysis logic of Python output here
 
-        // 加载生成的 GeoJSON 文件
+        // Load the generated Geojson file
         loadGeoJsonToQuPath(geojsonDir, wsiName);
     }
 
-    // 方法用于加载 GeoJSON 文件到 QuPath
+    // Methods to load the Geojson file to quPath
     private void loadGeoJsonToQuPath(String geojsonDir, String wsiName) {
-        File geojsonFile = new File(geojsonDir, wsiName); // 使用生成的 GeoJSON 文件名
+        File geojsonFile = new File(geojsonDir, wsiName); // Use the generated Geojson file name
         if (geojsonFile.exists()) {
-            // 获取文件的输入流
+            // Get the input stream of the file
             try (InputStream inputStream = new FileInputStream(geojsonFile)) {
-                // 使用 PathIO 提供的 readObjectsFromGeoJSON 方法读取 GeoJSON 文件
+                // Use the ReadObjectsfromgeojson method provided by Pathio to read the Geojson file
                 List<PathObject> objects = PathIO.readObjectsFromGeoJSON(inputStream);
-                // 将对象添加到 QuPath 的层次结构中
+                // Add the object to the hierarchical structure of Qupath
                 qupath.getViewer().getImageData().getHierarchy().addPathObjects(objects);
                 logger.info("GeoJSON file loaded successfully: " + geojsonFile.getAbsolutePath());
             } catch (IOException e) {
