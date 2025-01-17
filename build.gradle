@@ -14,9 +14,8 @@ ext.moduleName = 'io.github.qupath.extension.template'
 // TODO: Define the extension name & version, and provide a short description
 base {
     archivesName = rootProject.name
-    //version = '0.0.1-SNAPSHOT'
-    version = '0.5.0'
-    description = 'A simple QuPath extension template'
+    version = '0.5.1'
+    description = 'A CircleNet extension'
 }
 
 // TODO: Specify the QuPath version, compatible with the extension.
@@ -41,9 +40,9 @@ ext.qupathJavaVersion = 17
 dependencies {
 
 	// QuPath user interface jar
-    shadow "io.github.qupath:qupath-gui-fx:${qupathVersion}" // 使用 QuPath 的 GUI 版本
+    shadow "io.github.qupath:qupath-gui-fx:${qupathVersion}" // Use Qupath's GUI version
 
-    // 如果只需要核心库，可以使用 core
+    // If you only need the core library, you can use the core
     shadow "io.github.qupath:qupath-core:${qupathVersion}"
 
     // Main QuPath user interface jar.
