@@ -47,8 +47,8 @@ public class InterfaceController extends VBox {
     }
 
     @FXML
-    private void runDemoExtension() {
-        System.out.println("Demo extension run");
+    private void runGloExtension() {
+        System.out.println("Glo extension run");
     }
 
 

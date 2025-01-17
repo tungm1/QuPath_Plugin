@@ -22,19 +22,11 @@ import java.util.List;
 import java.util.ArrayList;
 import qupath.lib.objects.PathObject;
 
-
-
 /**
- * This is a demo to provide a template for creating a new QuPath extension.
- * 
- * It doesn't do much - it just shows how to add a menu item and a preference.
- * See the code and comments below for more info.
- * 
- * Important! For your extension to work in QuPath, you need to make sure the name and package
+ * Important! For this extension to work in QuPath, you need to make sure the name and package
  * of this class is consistent with the file:
  * 
  * /resources/META-INF/services/qupath.lib.gui.extensions.QuPathExtension
- * 
  */
 public class DemoExtension implements QuPathExtension, GitHubProject {
 	
@@ -113,7 +105,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 	}
 
 	/**
-	 * Demo showing how to add a persistent preference to the QuPath preferences pane.
+	 * Adds a persistent preference to the QuPath preferences pane.
 	 * The preference will be in a section of the preference pane based on the
 	 * category you set. The description is used as a tooltip.
 	 * @param qupath The currently running QuPathGUI instance.
@@ -121,8 +113,8 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 	private void addPreferenceToPane(QuPathGUI qupath) {
 		var propertyItem = new PropertyItemBuilder<>(enableExtensionProperty, Boolean.class)
 				.name("Enable extension")
-				.category("Demo extension")
-				.description("Enable the demo extension")
+				.category("Glo extension")
+				.description("Enable the Glo extension")
 				.build();
 		qupath.getPreferencePane()
 				.getPropertySheet()
@@ -131,7 +123,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 	}
 
 	/**
-	 * Demo showing how to add a persistent preference.
+	 * Adds a persistent preference.
 	 * This will be loaded whenever QuPath launches, with the value retained unless
 	 * the preferences are reset.
 	 * However, users will not be able to edit it unless you create a GUI
@@ -148,7 +140,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 	}
 
 	/**
-	 * Demo showing how a new command can be added to a QuPath menu.
+	 * New command can be added to a QuPath menu.
 	 * @param qupath
 	 */
 	private void addMenuItem(QuPathGUI qupath) {
@@ -163,7 +155,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 			// Submit task
 			gloCommand.submitDetectionTask();
 		    } catch (Exception ex) {
-			Dialogs.showErrorMessage("Error", "Failed to run GLO Command: " + ex.getMessage());
+			Dialogs.showErrorMessage("Error", "Failed to run Glo Command: " + ex.getMessage());
 		    }
 		});
 		menu.getItems().add(menuItem);
@@ -172,7 +164,7 @@ public class DemoExtension implements QuPathExtension, GitHubProject {
 
 
 	/**
-	 * Demo showing how to create a new stage with a JavaFX FXML interface.
+	 * Creates a new stage with a JavaFX FXML interface.
 	 */
 	private void createStage() {
 		if (stage == null) {
