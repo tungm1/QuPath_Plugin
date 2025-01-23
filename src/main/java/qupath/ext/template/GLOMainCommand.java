@@ -38,8 +38,6 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 import java.util.HashSet;
 
-
-
 public class GLOMainCommand {
 
     private static final Logger logger = LoggerFactory.getLogger(GLOMainCommand.class);
@@ -70,64 +68,63 @@ public class GLOMainCommand {
     Files.setPosixFilePermissions(path, perms);
     }
 
-public void downloadFile(String fileUrl, String destinationPath) throws IOException {
-    File destinationFile = new File(destinationPath);
+    public void downloadFile(String fileUrl, String destinationPath) throws IOException {
+        File destinationFile = new File(destinationPath);
 
-    // Check if the file already exists
-    if (destinationFile.exists()) {
-        System.out.println("File already exists: " + destinationPath);
-        return;
-    }
-
-    URL url = new URL(fileUrl);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setInstanceFollowRedirects(true);  // Automatically follow redirects
-    connection.setRequestMethod("GET");
-    connection.connect();
-
-    int status = connection.getResponseCode();
-    if (status != HttpURLConnection.HTTP_OK) {
-        // Handle redirects (e.g., 303, 302, etc.)
-        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM ||
-            status == HttpURLConnection.HTTP_SEE_OTHER) {
-            String newUrl = connection.getHeaderField("Location");
-            connection = (HttpURLConnection) new URL(newUrl).openConnection();
-            connection.connect();
-        } else {
-            throw new IOException("Failed to download file: " + connection.getResponseCode());
+        // Check if the file already exists
+        if (destinationFile.exists()) {
+            System.out.println("File already exists: " + destinationPath);
+            return;
         }
-    }
 
-    try (InputStream inputStream = connection.getInputStream();
-         FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
+        URL url = new URL(fileUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setInstanceFollowRedirects(true);  // Automatically follow redirects
+        connection.setRequestMethod("GET");
+        connection.connect();
 
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-    }
-
-    System.out.println("Downloaded: " + destinationPath);
-    setFolderPermissions(destinationPath);
-
-}
-
-
-// Helper method to parse confirmation token from Google Drive HTML page
-private String parseConfirmationToken(HttpURLConnection connection) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.contains("confirm")) {
-                // Extract the token from the HTML
-                String token = line.split("confirm=")[1].split("&")[0];
-                return token;
+        int status = connection.getResponseCode();
+        if (status != HttpURLConnection.HTTP_OK) {
+            // Handle redirects (e.g., 303, 302, etc.)
+            if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM ||
+                status == HttpURLConnection.HTTP_SEE_OTHER) {
+                String newUrl = connection.getHeaderField("Location");
+                connection = (HttpURLConnection) new URL(newUrl).openConnection();
+                connection.connect();
+            } else {
+                throw new IOException("Failed to download file: " + connection.getResponseCode());
             }
         }
+
+        try (InputStream inputStream = connection.getInputStream();
+            FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        System.out.println("Downloaded: " + destinationPath);
+        setFolderPermissions(destinationPath);
     }
-    return null;
-}
+
+
+    // Helper method to parse confirmation token from Google Drive HTML page
+    private String parseConfirmationToken(HttpURLConnection connection) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("confirm")) {
+                    // Extract the token from the HTML
+                    String token = line.split("confirm=")[1].split("&")[0];
+                    return token;
+                }
+            }
+        }
+        return null;
+    }
 
     // Method to unzip a .zip file
     public void unzipFile(String zipFilePath, String destDir) throws IOException {
@@ -329,13 +326,7 @@ private String parseConfirmationToken(HttpURLConnection connection) throws IOExc
         } catch (IOException | InterruptedException e) {
             logger.error("Error during process execution", e);
         }
-
-
     }
-
-
-
-
 
     // Methods to generate Geojson to save directory paths
     private String generateGeoJsonPath(String targetDir) {
