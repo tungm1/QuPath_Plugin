@@ -6,7 +6,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import qupath.ext.template.DemoExtension;
+import qupath.ext.template.GloExtension;
 import qupath.fx.dialogs.Dialogs;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class InterfaceController extends VBox {
         // it may be better to present them all to the user in the main extension GUI,
         // binding them to GUI elements, so they are updated when the user interacts with
         // the GUI, and so that the GUI elements are updated if the preference changes
-        threadSpinner.getValueFactory().valueProperty().bindBidirectional(DemoExtension.numThreadsProperty());
+        threadSpinner.getValueFactory().valueProperty().bindBidirectional(GloExtension.numThreadsProperty());
         threadSpinner.getValueFactory().valueProperty().addListener((observableValue, oldValue, newValue) -> {
             Dialogs.showInfoNotification(
                     resources.getString("title"),

@@ -9,7 +9,7 @@ plugins {
 }
 
 // TODO: Change the module name
-ext.moduleName = 'io.github.qupath.extension.template'
+ext.moduleName = 'io.github.qupath.extension.circlenet'
 
 // TODO: Define the extension name & version, and provide a short description
 base {

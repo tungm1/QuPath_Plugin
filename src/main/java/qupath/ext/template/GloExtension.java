@@ -28,9 +28,9 @@ import qupath.lib.objects.PathObject;
  * 
  * /resources/META-INF/services/qupath.lib.gui.extensions.QuPathExtension
  */
-public class DemoExtension implements QuPathExtension, GitHubProject {
+public class GloExtension implements QuPathExtension, GitHubProject {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DemoExtension.class);
+	private static final Logger logger = LoggerFactory.getLogger(GloExtension.class);
 
 	/**
 	 * Display name for extension
