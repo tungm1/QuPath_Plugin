@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import qupath.lib.gui.QuPathGUI;
 import qupath.lib.images.servers.ImageServer;
 import qupath.lib.objects.PathObject;
@@ -212,7 +213,7 @@ public class GLOMainCommand {
             desktopDir = System.getProperty("user.home") + "/Desktop";
         } else if (os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0) {
             // On Linux, the desktop is also in the user's home directory
-            desktopDir = "/home/VANDERBILT/tungm1"+ "/Desktop";
+            desktopDir = System.getProperty("user.home") + "/Desktop";
         } else {
             throw new IOException("Unsupported operating system");
         }
@@ -225,6 +226,7 @@ public class GLOMainCommand {
     // Submit detection task
     public void submitDetectionTask() {
         try {
+            String os = System.getProperty("os.name").toLowerCase();
             // QuPath directory setup based on OS
             String desktopDir = getDesktopDirectory();  // Get the QuPath directory based on the OS
             String qupathModelDir = desktopDir + "/models_and_pythonfiles";  // Create a models folder in the QuPath directory
@@ -272,7 +274,29 @@ public class GLOMainCommand {
 
             // Prepare Python command to run the downloaded script
             List<String> command = new ArrayList<>();
-            command.add("/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin/python3.7");  // Python interpreter
+            if (os.contains("win")) {
+                command.add("%PYTHONPATH%/python");
+            }
+
+            else {
+                try {
+                    // Run "which python3" command
+                    Process process = Runtime.getRuntime().exec("which python3");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                    String pythonPath = reader.readLine(); // Get the first line of output
+                    if (pythonPath != null && !pythonPath.isEmpty()) {
+                        command.add(pythonPath);
+                    } else {
+                        System.err.println("Python3 not found!");
+                    }
+
+                    process.waitFor(); // Ensure the process completes before proceeding
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
             command.add(qupathModelDir + "/python_scripts/CircleNet_Zip/src/run_detection_for_scn.py");  // Use the downloaded Python script
             command.add("circledet");
             command.add("--circle_fusion");
@@ -292,8 +316,19 @@ public class GLOMainCommand {
             // Run the process
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Map<String, String> env = processBuilder.environment();
-            env.put("PATH", "/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin:" + env.get("PATH"));
-            env.put("PYTHONPATH", "/home/VANDERBILT/tungm1/.local/lib/python3.7/site-packages");
+
+            String homeDir = System.getProperty("user.home");
+
+            // Dynamically construct paths instead of hardcoding
+            String envPythonPath = homeDir + "/.local/lib/python3.7/site-packages"; // Adjust based on user's Python version
+            String envPath = homeDir + "/miniconda3/envs/CircleNet/bin:" + env.getOrDefault("PATH", "");
+
+            env.put("PATH", envPath);
+            env.put("PYTHONPATH", envPythonPath);
+
+
+            // env.put("PATH", "/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin:" + env.get("PATH"));
+            // env.put("PYTHONPATH", "/home/VANDERBILT/tungm1/.local/lib/python3.7/site-packages");
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
