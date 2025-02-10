@@ -1,1 +1,2 @@
-This is the (WIP) QuPath plugin for CircleNet.
+This is a QuPath plugin for CircleNet. It requires Java 17 (which is needed for any current Java QuPath plugin) and Python ~3.12.4.
+Currently working on Linux, work in progress for Mac and Windows compatibility.
