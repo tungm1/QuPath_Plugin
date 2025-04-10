@@ -326,9 +326,6 @@ public class GLOMainCommand {
             env.put("PATH", envPath);
             env.put("PYTHONPATH", envPythonPath);
 
-
-            // env.put("PATH", "/home/VANDERBILT/tungm1/miniconda3/envs/CircleNet/bin:" + env.get("PATH"));
-            // env.put("PYTHONPATH", "/home/VANDERBILT/tungm1/.local/lib/python3.7/site-packages");
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
